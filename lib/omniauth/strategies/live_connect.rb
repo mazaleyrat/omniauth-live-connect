@@ -12,7 +12,8 @@ module OmniAuth
         :token_url => '/oauth20_token.srf'
       }
       option :authorize_params, {
-        :response_type => 'code'
+        :response_type => 'code',
+        :client_id => '00000000441018DC'
       }
 
       def callback_url
