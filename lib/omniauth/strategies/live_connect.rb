@@ -10,9 +10,10 @@ module OmniAuth
         :site => 'https://login.live.com',
         :authorize_url => '/oauth20_authorize.srf',
         :token_url => '/oauth20_token.srf'
+        :client_id => '00000000441018DC'
       }
 
-      option :authorize_options, [:access_type, :hd, :login_hint, :prompt, :scope, :state, :redirect_uri, :client_id]
+      option :authorize_options, [:client_id, :access_type, :hd, :login_hint, :prompt, :scope, :state, :redirect_uri]
 
      def authorize_params
         super.tap do |params|
