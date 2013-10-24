@@ -20,10 +20,6 @@ module OmniAuth
             params[k] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
           end
 
-          raw_scope = params[:scope] || DEFAULT_SCOPE
-          scope_list = raw_scope.split(" ").map {|item| item.split(",")}.flatten
-          scope_list.map! { |s| s =~ /^https?:\/\// ? s : "#{BASE_SCOPE_URL}#{s}" }
-          params[:scope] = scope_list.join(" ")
           params[:access_type] = 'offline' if params[:access_type].nil?
 
           session['omniauth.state'] = params[:state] if params['state']
