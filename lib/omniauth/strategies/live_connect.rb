@@ -11,17 +11,23 @@ module OmniAuth
         :authorize_url => '/oauth20_authorize.srf',
         :token_url => '/oauth20_token.srf'
       }
-      option :authorize_params, {
-        :response_type => 'code',
-        :client_id => '00000000441018DC'
-      }
 
-      def callback_url
-        super.sub('http:', 'https:')
-      end
+      option :authorize_options, [:access_type, :hd, :login_hint, :prompt, :scope, :state, :redirect_uri, :client_id]
 
-      def request_phase
-        super
+     def authorize_params
+        super.tap do |params|
+          options[:authorize_options].each do |k|
+            params[k] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
+          end
+
+          raw_scope = params[:scope] || DEFAULT_SCOPE
+          scope_list = raw_scope.split(" ").map {|item| item.split(",")}.flatten
+          scope_list.map! { |s| s =~ /^https?:\/\// ? s : "#{BASE_SCOPE_URL}#{s}" }
+          params[:scope] = scope_list.join(" ")
+          params[:access_type] = 'offline' if params[:access_type].nil?
+
+          session['omniauth.state'] = params[:state] if params['state']
+        end
       end
 
       uid { raw_info['id'].to_s }
