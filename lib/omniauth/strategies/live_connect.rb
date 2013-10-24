@@ -13,20 +13,6 @@ module OmniAuth
         :client_id => '00000000441018DC'
       }
 
-      option :authorize_options, [:client_id, :access_type, :hd, :login_hint, :prompt, :scope, :state, :redirect_uri]
-
-     def authorize_params
-        super.tap do |params|
-          options[:authorize_options].each do |k|
-            params[k] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
-          end
-
-          params[:access_type] = 'offline' if params[:access_type].nil?
-
-          session['omniauth.state'] = params[:state] if params['state']
-        end
-      end
-
       uid { raw_info['id'].to_s }
 
       info do
