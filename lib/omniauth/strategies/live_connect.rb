@@ -17,7 +17,7 @@ module OmniAuth
       }
 
 
-      def initialize(app, client_id=nil, client_secret=nil, options = {}, &block)
+      def initialize(app, client_id=nil, client_secret=nil)
 
         options = {
           }.merge(options)
@@ -26,7 +26,7 @@ module OmniAuth
         @client_secret = client_secret
 
 
-          super(app, :live_connect, client_id, client_secret, options, &block)
+          super(app, :live_connect, client_id, client_secret)
         end
 
         def authorize_params
